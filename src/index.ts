@@ -16,7 +16,8 @@ export default function extractDrupalT(options: ExtractDrupalTOptions = {}): Plu
       if (!filter(id)) return null;
 
       // Match Drupal.t('...') and (Drupal).t('...') calls, including parameters.
-      const regex = /((\(Drupal\)|Drupal)\.t\((['"`].*?['"`](?:,.*?)*?)\))/g;
+      // Using [\s\S] instead of . to match multiline strings (including newlines)
+      const regex = /((\(Drupal\)|Drupal)\.t\((['"`][\s\S]*?['"`](?:,[\s\S]*?)*?)\))/g;
       let match: RegExpExecArray | null;
 
       while ((match = regex.exec(code)) !== null) {
@@ -24,7 +25,8 @@ export default function extractDrupalT(options: ExtractDrupalTOptions = {}): Plu
       }
 
       // Match Drupal.formatPlural('...', '...', '...', ...);
-      const pluralRegex = /((\(Drupal\)|Drupal)\.formatPlural\((\d+),\s*(['"`].*?['"`]),\s*(['"`].*?['"`]),\s*(.*?)(?:,\s*(.*?))?\))/g;
+      // Using [\s\S] instead of . to match multiline strings (including newlines)
+      const pluralRegex = /((\(Drupal\)|Drupal)\.formatPlural\((\d+),\s*(['"`][\s\S]*?['"`]),\s*(['"`][\s\S]*?['"`]),\s*([\s\S]*?)(?:,\s*([\s\S]*?))?\))/g;
       let pluralMatch: RegExpExecArray | null;
 
       while ((pluralMatch = pluralRegex.exec(code)) !== null) {
