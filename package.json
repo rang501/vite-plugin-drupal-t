@@ -1,11 +1,23 @@
 {
   "name": "vite-plugin-drupal-t",
   "version": "1.0.0",
-  "description": "A Vite plugin to extract Drupal.t() translations",
+  "description": "A Vite plugin that automatically extracts Drupal.t() and Drupal.formatPlural() translation calls for seamless internationalization",
+  "author": "Märt Rang <rang501@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rang501/vite-plugin-drupal-t.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rang501/vite-plugin-drupal-t/issues"
+  },
+  "homepage": "https://github.com/rang501/vite-plugin-drupal-t#readme",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "tsc",
@@ -15,9 +27,16 @@
     "prepublishOnly": "npm run build"
   },
   "keywords": [
+    "vite",
     "vite-plugin",
     "drupal",
-    "translations"
+    "translations",
+    "i18n",
+    "internationalization",
+    "l10n",
+    "localization",
+    "drupal-t",
+    "formatPlural"
   ],
   "dependencies": {
     "@rollup/pluginutils": "^4.2.1"
