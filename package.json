@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-drupal-t",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A Vite plugin that automatically extracts Drupal.t() and Drupal.formatPlural() translation calls for seamless internationalization",
   "author": "Märt Rang <rang501@gmail.com>",
   "license": "MIT",
