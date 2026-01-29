@@ -1,5 +1,5 @@
 import { createFilter } from '@rollup/pluginutils';
-import type { Plugin } from 'rollup';
+import type { Plugin } from 'vite';
 
 export interface ExtractDrupalTOptions {
   include?: string | string[];
@@ -12,6 +12,20 @@ export default function extractDrupalT(options: ExtractDrupalTOptions = {}): Plu
 
   return {
     name: 'extract-drupal-t',
+    config() {
+      return {
+        build: {
+          rollupOptions: {
+            external: ['Drupal'],
+            output: {
+              globals: {
+                Drupal: 'Drupal',
+              },
+            },
+          },
+        },
+      };
+    },
     transform(code: string, id: string) {
       if (!filter(id)) return null;
 

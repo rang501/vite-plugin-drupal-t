@@ -1,4 +1,4 @@
-import type { Plugin } from 'rollup';
+import type { Plugin } from 'vite';
 export interface ExtractDrupalTOptions {
     include?: string | string[];
     exclude?: string | string[];

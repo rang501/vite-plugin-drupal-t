@@ -4,6 +4,20 @@ export default function extractDrupalT(options = {}) {
     const translations = new Set();
     return {
         name: 'extract-drupal-t',
+        config() {
+            return {
+                build: {
+                    rollupOptions: {
+                        external: ['Drupal'],
+                        output: {
+                            globals: {
+                                Drupal: 'Drupal',
+                            },
+                        },
+                    },
+                },
+            };
+        },
         transform(code, id) {
             if (!filter(id))
                 return null;
