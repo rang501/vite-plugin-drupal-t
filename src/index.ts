@@ -56,7 +56,7 @@ export default function extractDrupalT(options: ExtractDrupalTOptions = {}): Plu
         // Format each translation as a comment.
         // Replace '(Drupal)' with 'Drupal' for consistency.
         // Drupal can find the translations it needs to include.
-        .map((translation) => `// ${translation.replace('(Drupal)', 'Drupal')}`)
+        .map((translation) => translation.replace('(Drupal)', 'Drupal').split('\n').map(line => `// ${line}`).join('\n'))
         .join('\n');
 
       this.emitFile({

@@ -161,7 +161,7 @@ multiline string\`);`;
       const output = generateOutput(plugin);
 
       expect(output).toContain('// Drupal.t(`This is a');
-      expect(output).toContain('multiline string`)');
+      expect(output).toContain('// multiline string`)');
     });
 
     it('should extract single-line template literals', () => {
@@ -193,7 +193,7 @@ Line 2\`, {});`;
       const output = generateOutput(plugin);
 
       expect(output).toContain('// Drupal.t(`Line 1');
-      expect(output).toContain('Line 2`, {})');
+      expect(output).toContain('// Line 2`, {})');
     });
 
     it('should extract multiline formatPlural strings', () => {
@@ -205,11 +205,9 @@ items\`, {});`;
       callTransform(plugin, code, id);
       const output = generateOutput(plugin);
 
-      expect(output).toContain('// Drupal.formatPlural(5,');
-      expect(output).toContain('`One');
-      expect(output).toContain('item`');
-      expect(output).toContain('`Many');
-      expect(output).toContain('items`, {})');
+      expect(output).toContain('// Drupal.formatPlural(5, `One');
+      expect(output).toContain('// item`, `Many');
+      expect(output).toContain('// items`, {})');
     });
   });
 
