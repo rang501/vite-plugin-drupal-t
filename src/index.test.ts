@@ -149,6 +149,16 @@ describe('extractDrupalT', () => {
 
       expect(output).toContain(`Drupal.t('Total cost (@count items)', {'@count': count})`);
     });
+
+    it('should extract Drupal.t() with nested function calls in parameters', () => {
+      const code = `const message = Drupal.t('@count results', { '@count': String(domain.total) });`;
+      const id = 'test.js';
+
+      callTransform(plugin, code, id);
+      const output = generateOutput(plugin);
+
+      expect(output).toContain(`Drupal.t('@count results', { '@count': String(domain.total) })`);
+    });
   });
 
   describe('Drupal.t() multiline strings', () => {

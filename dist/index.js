@@ -1,4 +1,34 @@
 import { createFilter } from '@rollup/pluginutils';
+/**
+ * Find the index of the closing ')' that balances the already-opened '(',
+ * skipping over quoted strings and nested parentheses.
+ */
+function findBalancedClose(code, start) {
+    let depth = 1;
+    let i = start;
+    while (i < code.length && depth > 0) {
+        const ch = code[i];
+        if (ch === '(') {
+            depth++;
+        }
+        else if (ch === ')') {
+            depth--;
+            if (depth === 0)
+                return i;
+        }
+        else if (ch === "'" || ch === '"' || ch === '`') {
+            // Skip over quoted strings
+            i++;
+            while (i < code.length && code[i] !== ch) {
+                if (code[i] === '\\')
+                    i++; // skip escaped chars
+                i++;
+            }
+        }
+        i++;
+    }
+    return -1;
+}
 export default function extractDrupalT(options = {}) {
     const filter = createFilter(options.include, options.exclude);
     const translations = new Set();
@@ -21,19 +51,25 @@ export default function extractDrupalT(options = {}) {
         transform(code, id) {
             if (!filter(id))
                 return null;
-            // Match Drupal.t('...') and (Drupal).t('...') calls, including parameters.
-            // Using [\s\S] instead of . to match multiline strings (including newlines)
-            const regex = /((\(Drupal\)|Drupal)\.t\((['"`][\s\S]*?['"`](?:,[\s\S]*?)*?)\))/g;
-            let match;
-            while ((match = regex.exec(code)) !== null) {
-                translations.add(match[0]);
+            // Match Drupal.t() and (Drupal).t() calls with balanced parentheses.
+            const tCallRegex = /(\(Drupal\)|Drupal)\.t\(/g;
+            let tMatch;
+            while ((tMatch = tCallRegex.exec(code)) !== null) {
+                const argsStart = tMatch.index + tMatch[0].length;
+                const end = findBalancedClose(code, argsStart);
+                if (end !== -1) {
+                    translations.add(code.slice(tMatch.index, end + 1));
+                }
             }
-            // Match Drupal.formatPlural('...', '...', '...', ...);
-            // Using [\s\S] instead of . to match multiline strings (including newlines)
-            const pluralRegex = /((\(Drupal\)|Drupal)\.formatPlural\((\d+),\s*(['"`][\s\S]*?['"`]),\s*(['"`][\s\S]*?['"`]),\s*([\s\S]*?)(?:,\s*([\s\S]*?))?\))/g;
+            // Match Drupal.formatPlural() and (Drupal).formatPlural() calls.
+            const pluralRegex = /(\(Drupal\)|Drupal)\.formatPlural\(/g;
             let pluralMatch;
             while ((pluralMatch = pluralRegex.exec(code)) !== null) {
-                translations.add(pluralMatch[0]);
+                const argsStart = pluralMatch.index + pluralMatch[0].length;
+                const end = findBalancedClose(code, argsStart);
+                if (end !== -1) {
+                    translations.add(code.slice(pluralMatch.index, end + 1));
+                }
             }
             return null;
         },
