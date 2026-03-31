@@ -38,14 +38,14 @@ export default function extractDrupalT(options = {}) {
             return null;
         },
         generateBundle() {
-            const bundleContent = Array.from(translations)
+            const lines = Array.from(translations)
                 // Sort translations to ensure consistent order.
                 .sort()
-                // Format each translation as a comment.
                 // Replace '(Drupal)' with 'Drupal' for consistency.
                 // Drupal can find the translations it needs to include.
-                .map((translation) => translation.replace('(Drupal)', 'Drupal').split('\n').map(line => `// ${line}`).join('\n'))
+                .map((translation) => translation.replace('(Drupal)', 'Drupal'))
                 .join('\n');
+            const bundleContent = lines ? `/*\n${lines}\n*/` : '';
             this.emitFile({
                 type: 'asset',
                 fileName: 'translations.js',

@@ -17,7 +17,7 @@ describe('extractDrupalT', () => {
       callTransform(plugin, code, id);
       const output = generateOutput(plugin);
 
-      expect(output).toContain(`// Drupal.t('Hello World')`);
+      expect(output).toContain(`Drupal.t('Hello World')`);
     });
 
     it('should extract Drupal.t() with double quotes', () => {
@@ -27,7 +27,7 @@ describe('extractDrupalT', () => {
       callTransform(plugin, code, id);
       const output = generateOutput(plugin);
 
-      expect(output).toContain(`// Drupal.t("Hello World")`);
+      expect(output).toContain(`Drupal.t("Hello World")`);
     });
 
     it('should extract Drupal.t() with backticks', () => {
@@ -37,7 +37,7 @@ describe('extractDrupalT', () => {
       callTransform(plugin, code, id);
       const output = generateOutput(plugin);
 
-      expect(output).toContain('// Drupal.t(`Hello World`)');
+      expect(output).toContain('Drupal.t(`Hello World`)');
     });
 
     it('should extract (Drupal).t() calls', () => {
@@ -47,7 +47,7 @@ describe('extractDrupalT', () => {
       callTransform(plugin, code, id);
       const output = generateOutput(plugin);
 
-      expect(output).toContain(`// Drupal.t('Hello World')`);
+      expect(output).toContain(`Drupal.t('Hello World')`);
     });
 
     it('should extract Drupal.t() with context parameter', () => {
@@ -57,7 +57,7 @@ describe('extractDrupalT', () => {
       callTransform(plugin, code, id);
       const output = generateOutput(plugin);
 
-      expect(output).toContain(`// Drupal.t('Hello World', {}, {context: 'greeting'})`);
+      expect(output).toContain(`Drupal.t('Hello World', {}, {context: 'greeting'})`);
     });
 
     it('should extract Drupal.t() with placeholder variables', () => {
@@ -67,7 +67,7 @@ describe('extractDrupalT', () => {
       callTransform(plugin, code, id);
       const output = generateOutput(plugin);
 
-      expect(output).toContain(`// Drupal.t('Hello @name', {'@name': userName})`);
+      expect(output).toContain(`Drupal.t('Hello @name', {'@name': userName})`);
     });
 
     it('should extract multiple Drupal.t() calls', () => {
@@ -81,9 +81,9 @@ describe('extractDrupalT', () => {
       callTransform(plugin, code, id);
       const output = generateOutput(plugin);
 
-      expect(output).toContain(`// Drupal.t('First message')`);
-      expect(output).toContain(`// Drupal.t('Second message')`);
-      expect(output).toContain(`// Drupal.t('Third message')`);
+      expect(output).toContain(`Drupal.t('First message')`);
+      expect(output).toContain(`Drupal.t('Second message')`);
+      expect(output).toContain(`Drupal.t('Third message')`);
     });
 
     it('should deduplicate identical Drupal.t() calls', () => {
@@ -107,7 +107,7 @@ describe('extractDrupalT', () => {
       callTransform(plugin, code, id);
       const output = generateOutput(plugin);
 
-      expect(output).toContain(`// Drupal.t("It's a test")`);
+      expect(output).toContain(`Drupal.t("It's a test")`);
     });
 
     it('should extract Drupal.t() with special characters in string', () => {
@@ -117,7 +117,7 @@ describe('extractDrupalT', () => {
       callTransform(plugin, code, id);
       const output = generateOutput(plugin);
 
-      expect(output).toContain(`// Drupal.t('Message with @placeholder and %markup')`);
+      expect(output).toContain(`Drupal.t('Message with @placeholder and %markup')`);
     });
 
     it('should extract Drupal.t() with parentheses in string', () => {
@@ -127,7 +127,7 @@ describe('extractDrupalT', () => {
       callTransform(plugin, code, id);
       const output = generateOutput(plugin);
 
-      expect(output).toContain(`// Drupal.t('This is a message (with parentheses)')`);
+      expect(output).toContain(`Drupal.t('This is a message (with parentheses)')`);
     });
 
     it('should extract Drupal.t() with nested parentheses in string', () => {
@@ -137,7 +137,7 @@ describe('extractDrupalT', () => {
       callTransform(plugin, code, id);
       const output = generateOutput(plugin);
 
-      expect(output).toContain(`// Drupal.t('Message (with (nested) parentheses)')`);
+      expect(output).toContain(`Drupal.t('Message (with (nested) parentheses)')`);
     });
 
     it('should extract Drupal.t() with parentheses and parameters', () => {
@@ -147,7 +147,7 @@ describe('extractDrupalT', () => {
       callTransform(plugin, code, id);
       const output = generateOutput(plugin);
 
-      expect(output).toContain(`// Drupal.t('Total cost (@count items)', {'@count': count})`);
+      expect(output).toContain(`Drupal.t('Total cost (@count items)', {'@count': count})`);
     });
   });
 
@@ -160,8 +160,8 @@ multiline string\`);`;
       callTransform(plugin, code, id);
       const output = generateOutput(plugin);
 
-      expect(output).toContain('// Drupal.t(`This is a');
-      expect(output).toContain('// multiline string`)');
+      expect(output).toContain('Drupal.t(`This is a');
+      expect(output).toContain('multiline string`)');
     });
 
     it('should extract single-line template literals', () => {
@@ -171,7 +171,7 @@ multiline string\`);`;
       callTransform(plugin, code, id);
       const output = generateOutput(plugin);
 
-      expect(output).toContain('// Drupal.t(`Single line template literal`)');
+      expect(output).toContain('Drupal.t(`Single line template literal`)');
     });
 
     it('should extract template literals with escaped content on single line', () => {
@@ -181,7 +181,7 @@ multiline string\`);`;
       callTransform(plugin, code, id);
       const output = generateOutput(plugin);
 
-      expect(output).toContain('// Drupal.t(`Message with ${variable} interpolation`)');
+      expect(output).toContain('Drupal.t(`Message with ${variable} interpolation`)');
     });
 
     it('should extract multiline strings with parameters', () => {
@@ -192,8 +192,8 @@ Line 2\`, {});`;
       callTransform(plugin, code, id);
       const output = generateOutput(plugin);
 
-      expect(output).toContain('// Drupal.t(`Line 1');
-      expect(output).toContain('// Line 2`, {})');
+      expect(output).toContain('Drupal.t(`Line 1');
+      expect(output).toContain('Line 2`, {})');
     });
 
     it('should extract multiline formatPlural strings', () => {
@@ -205,9 +205,9 @@ items\`, {});`;
       callTransform(plugin, code, id);
       const output = generateOutput(plugin);
 
-      expect(output).toContain('// Drupal.formatPlural(5, `One');
-      expect(output).toContain('// item`, `Many');
-      expect(output).toContain('// items`, {})');
+      expect(output).toContain('Drupal.formatPlural(5, `One');
+      expect(output).toContain('item`, `Many');
+      expect(output).toContain('items`, {})');
     });
   });
 
@@ -222,7 +222,7 @@ items\`, {});`;
       callTransform(plugin, code, id);
       const output = generateOutput(plugin);
 
-      expect(output).toContain(`// Drupal.formatPlural(5, '1 item', '@count items', {})`);
+      expect(output).toContain(`Drupal.formatPlural(5, '1 item', '@count items', {})`);
     });
 
     it('should extract formatPlural with double quotes and empty object', () => {
@@ -232,7 +232,7 @@ items\`, {});`;
       callTransform(plugin, code, id);
       const output = generateOutput(plugin);
 
-      expect(output).toContain(`// Drupal.formatPlural(10, "1 item", "@count items", {})`);
+      expect(output).toContain(`Drupal.formatPlural(10, "1 item", "@count items", {})`);
     });
 
     it('should extract formatPlural with replacements', () => {
@@ -242,7 +242,7 @@ items\`, {});`;
       callTransform(plugin, code, id);
       const output = generateOutput(plugin);
 
-      expect(output).toContain(`// Drupal.formatPlural(3, '1 item', '@count items', {'@count': 3})`);
+      expect(output).toContain(`Drupal.formatPlural(3, '1 item', '@count items', {'@count': 3})`);
     });
 
     it('should extract formatPlural with options', () => {
@@ -252,7 +252,7 @@ items\`, {});`;
       callTransform(plugin, code, id);
       const output = generateOutput(plugin);
 
-      expect(output).toContain(`// Drupal.formatPlural(2, '1 item', '@count items', {}, {context: 'shopping'})`);
+      expect(output).toContain(`Drupal.formatPlural(2, '1 item', '@count items', {}, {context: 'shopping'})`);
     });
 
     it('should extract (Drupal).formatPlural() calls', () => {
@@ -262,7 +262,7 @@ items\`, {});`;
       callTransform(plugin, code, id);
       const output = generateOutput(plugin);
 
-      expect(output).toContain(`// Drupal.formatPlural(7, '1 item', '@count items', {})`);
+      expect(output).toContain(`Drupal.formatPlural(7, '1 item', '@count items', {})`);
     });
 
     it('should extract multiple formatPlural calls', () => {
@@ -275,8 +275,8 @@ items\`, {});`;
       callTransform(plugin, code, id);
       const output = generateOutput(plugin);
 
-      expect(output).toContain(`// Drupal.formatPlural(1, '1 item', '@count items', {})`);
-      expect(output).toContain(`// Drupal.formatPlural(5, '1 user', '@count users', {})`);
+      expect(output).toContain(`Drupal.formatPlural(1, '1 item', '@count items', {})`);
+      expect(output).toContain(`Drupal.formatPlural(5, '1 user', '@count users', {})`);
     });
 
     it('should deduplicate identical formatPlural calls', () => {
@@ -300,7 +300,7 @@ items\`, {});`;
       callTransform(plugin, code, id);
       const output = generateOutput(plugin);
 
-      expect(output).toContain(`// Drupal.formatPlural(5, '1 item (single)', '@count items (multiple)', {})`);
+      expect(output).toContain(`Drupal.formatPlural(5, '1 item (single)', '@count items (multiple)', {})`);
     });
   });
 
@@ -316,9 +316,9 @@ items\`, {});`;
       callTransform(plugin, code, id);
       const output = generateOutput(plugin);
 
-      expect(output).toContain(`// Drupal.t('Hello')`);
-      expect(output).toContain(`// Drupal.formatPlural(4, '1 item', '@count items', {})`);
-      expect(output).toContain(`// Drupal.t('Goodbye')`);
+      expect(output).toContain(`Drupal.t('Hello')`);
+      expect(output).toContain(`Drupal.formatPlural(4, '1 item', '@count items', {})`);
+      expect(output).toContain(`Drupal.t('Goodbye')`);
     });
 
     it('should sort all translations alphabetically', () => {
@@ -332,7 +332,7 @@ items\`, {});`;
       callTransform(plugin, code, id);
       const output = generateOutput(plugin);
 
-      const lines = output.split('\n').filter(line => line.trim());
+      const lines = output.split('\n').filter(line => line.trim() && line.trim() !== '/*' && line.trim() !== '*/');
       expect(lines[0]).toContain('formatPlural');
       expect(lines[1]).toContain('Apple');
       expect(lines[2]).toContain('Zebra');
@@ -346,7 +346,7 @@ items\`, {});`;
 
       callTransform(plugin, code, 'test.js');
       const output = generateOutput(plugin);
-      expect(output).toContain(`// Drupal.t('Test')`);
+      expect(output).toContain(`Drupal.t('Test')`);
 
       plugin = extractDrupalT({ include: '**/*.js' }) as Plugin;
       callTransform(plugin, code, 'test.ts');
@@ -360,7 +360,7 @@ items\`, {});`;
 
       callTransform(plugin, code, 'main.js');
       const output = generateOutput(plugin);
-      expect(output).toContain(`// Drupal.t('Test')`);
+      expect(output).toContain(`Drupal.t('Test')`);
 
       plugin = extractDrupalT({ exclude: '**/*.test.js' }) as Plugin;
       callTransform(plugin, code, 'file.test.js');
@@ -387,7 +387,7 @@ items\`, {});`;
       callTransform(plugin, code, id);
       const output = generateOutput(plugin);
 
-      expect(output).toContain(`// Drupal.t('')`);
+      expect(output).toContain(`Drupal.t('')`);
     });
 
     it('should handle code with no translations', () => {
